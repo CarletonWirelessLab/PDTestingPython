@@ -14,7 +14,7 @@ def sig_field_decoder(complex_data, pkt_locs, hinv):
     pkt_count = pkt_shape[0]
 
     rate = np.zeros((pkt_count, 4))
-    res = np.zeros((pkt_count, 1))
+    res = np.zeros(pkt_count)
     length = np.zeros((pkt_count, 12))
     parity = np.zeros((pkt_count, 1))
     tail = np.zeros((pkt_count, 6))
@@ -44,7 +44,7 @@ def sig_field_decoder(complex_data, pkt_locs, hinv):
         sig_48_deinter = sig_48_bits[k48]
         decodedout = convdenc(sig_48_deinter, '1/2')
         rate[n, :] = (decodedout[0:4]).T
-        res[n, :] = (decodedout[4]).T
+        res[n] = (decodedout[4])
         length[n, :] = (decodedout[5:17]).T
         parity[n, :] = (decodedout[17]).T
         tail[n,  :] = (decodedout[18:24]).T

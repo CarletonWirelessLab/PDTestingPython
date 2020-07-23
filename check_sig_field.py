@@ -13,7 +13,7 @@ def check_sig_field(rate, res, length, parity, tail):
     MSC = -1*np.ones((pkt_count,1))
     # print(pkt_count)
     for n in range(0, pkt_count):
-        if res[n, :] != 0: # check reserved bit is set to zero
+        if res[n] != 0: # check reserved bit is set to zero
             print("PACKET " + str(n+1) + " reserved bit is not valid")
             continue
         elif sum(tail[n,:]) > 0: # check tail is 6 zeros

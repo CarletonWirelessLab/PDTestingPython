@@ -6,8 +6,7 @@ from sig_field_decoder import sig_field_decoder
 from check_sig_field import check_sig_field
 import numpy as np
 
-
-bin_file = "Receive25%.bin"
+bin_file = "../Bins/Receive25%.bin"
 fraction = 1/60
 complex_data = raw_to_complex(bin_file, fraction)
 
