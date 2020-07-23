@@ -3,8 +3,9 @@ import constants as c
 
 def convdenc(codedin,R):
     xin = np.array(codedin)
-    A = xin[0:-1:2]
-    B = xin[1:-1:2]
+    Nx = xin.size   
+    A = xin[0:Nx:2]
+    B = xin[1:Nx:2]
 
     T1 = 0
     T2 = 0
@@ -12,7 +13,8 @@ def convdenc(codedin,R):
     T4 = 0
     T5 = 0
     T6 = 0
-    N = len(A)
+    N = A.size #len(A)
+    print(N)
     decodedout = np.zeros((N,1))
     for n in range(0,N):
         # temporary storage of shift register states
