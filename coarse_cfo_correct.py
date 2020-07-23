@@ -27,15 +27,15 @@ def coarse_cfo_correct(complex_data, pkt_locs):
         df_2 = [complex_data[i] for i in v_2]
         df_2 = np.conj(df_2)
         df = df_0 * np.angle(np.sum(df_1 * df_2))
-        df = np.round(df, 4)
+        # df = np.round(df, 4)
         nv = np.arange(start_index, end_index)
         # print(nv[0:10])
         # print(start_index)
         nv = np.array(nv)
-        nv = nv + 1
+        nv = nv
         ev = 1j * nv * df
         ev = np.exp(ev)
-        nv = nv - 1
+        nv = nv
         temp = [complex_data[x] for x in nv]
         temp = temp * ev
         # temp = complex_data[nv]*ev

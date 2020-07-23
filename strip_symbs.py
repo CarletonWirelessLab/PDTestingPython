@@ -17,5 +17,5 @@ def strip_symbs(complex_data, pkt_startn, m):
     end_index = max(v) + 1
 
     symbs = complex_data[int(start_index):int(end_index)]
-
+    print(len(symbs))
     return symbs

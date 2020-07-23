@@ -6,9 +6,9 @@ def check_sig_field(rate, res, length, parity, tail):
     rate = np.array(rate)
     res = np.array(res)
     length = np.array(length)
-    length = bi2de(length)
-    print(length)
-    exit()
+    # length = bi2de(length)
+    print(length[0,:])
+    # exit()
     parity = np.array(parity)
     tail = np.array(tail)
 
@@ -30,7 +30,7 @@ def check_sig_field(rate, res, length, parity, tail):
             if sum(rate[n, :] == [1, 1, 0, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("--------------------")
-                print("# PAYLOAD LENGTH = %d BYTES", bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = " + str(bi2de(length[n,:])) + " BYTES")
                 print("# BIT RATE 6 Mbps")
                 print("# MODULATION BPSK")
                 print("# CODE RATE 1/2")
@@ -39,7 +39,7 @@ def check_sig_field(rate, res, length, parity, tail):
             elif sum(rate[n, :] == [1, 1, 1, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
-                # print("# PAYLOAD LENGTH = %d BYTES",bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = " + str(bi2de(length[n,:])) + " BYTES")
                 print("# BIT RATE 9 Mbps")
                 print("# MODULATION BPSK")
                 print("# CODE RATE 3/4")
@@ -48,7 +48,7 @@ def check_sig_field(rate, res, length, parity, tail):
             elif sum(rate[n, :] == [0, 1, 0, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
-                # print("# PAYLOAD LENGTH = %d BYTES",bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = " + str(bi2de(length[n,:])) + " BYTES")
                 print("# BIT RATE 12 Mbps")
                 print("# MODULATION QPSK")
                 print("# CODE RATE 1/2")
@@ -57,7 +57,7 @@ def check_sig_field(rate, res, length, parity, tail):
             elif sum(rate[n, :] == [0, 1, 1, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
-                # print("# PAYLOAD LENGTH = %d BYTES",bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = " + str(bi2de(length[n,:])) + " BYTES")
                 print("# BIT RATE 18 Mbps")
                 print("# MODULATION QPSK")
                 print("# CODE RATE 3/4")
@@ -66,7 +66,7 @@ def check_sig_field(rate, res, length, parity, tail):
             elif sum(rate[n, :] == [1, 0, 0, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
-                # print("# PAYLOAD LENGTH = %d BYTES",bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = " + str(bi2de(length[n,:])) + " BYTES")
                 print("# BIT RATE 24 Mbps")
                 print("# MODULATION 16-QAM")
                 print("# CODE RATE 1/2")
@@ -75,7 +75,7 @@ def check_sig_field(rate, res, length, parity, tail):
             elif sum(rate[n, :] == [1, 0, 1, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
-                # print("# PAYLOAD LENGTH = %d BYTES",bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = " + str(bi2de(length[n,:])) + " BYTES")
                 print("# BIT RATE 36 Mbps")
                 print("# MODULATION 16-QAM")
                 print("# CODE RATE 3/4")
@@ -84,7 +84,7 @@ def check_sig_field(rate, res, length, parity, tail):
             elif sum(rate[n, :] == [0, 0, 0, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
-                # print("# PAYLOAD LENGTH = %d BYTES",bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = " + str(bi2de(length[n,:])) + " BYTES")
                 print("# BIT RATE 48 Mbps")
                 print("# MODULATION 64-QAM")
                 print("# CODE RATE 2/3")
@@ -93,7 +93,7 @@ def check_sig_field(rate, res, length, parity, tail):
             elif sum(rate[n, :] == [0, 0, 1, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
-                # print("# PAYLOAD LENGTH = %d BYTES",bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = " + str(bi2de(length[n,:])) + " BYTES")
                 print("# BIT RATE 54 Mbps")
                 print("# MODULATION 64-QAM")
                 print("# CODE RATE 3/4")
