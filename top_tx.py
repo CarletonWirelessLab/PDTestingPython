@@ -1,8 +1,8 @@
 import numpy as np
 import cmath as cm
 import matplotlib.pyplot as plt
-
-
+from conv_enc import conv_enc
+from interleave_symbs import interleave_symbs
 def de2bi(n,N):
     bseed= bin(n).replace("0b", "")
     fix = N-len(bseed)
@@ -87,38 +87,40 @@ elif code_rate == '2/3':
     RATE[2:4] = [0,1]
     
 RES = np.zeros(1) # reserved bit
-LENGTH = np.array(de2bi(min(ppdu_length,(2^12)-1),12)).T # length bits in binary
+LENGTH = np.flip((np.array(de2bi(min(ppdu_length,(2**12)-1),12))).T) # length bits in binary
 x = np.concatenate((RATE,LENGTH))
 PARITY = np.sum(x)%2*np.ones(1) # even parity
 TAIL = np.zeros(6) # tail of 6 zeros
 sig_bits = np.concatenate((RATE,RES,LENGTH,PARITY,TAIL)) # concatenate all 24 bits together
+
 # convolutional encoder 
-# sig_bits_encoded = conv_enc(sig_bits,'1/2')
+sig_bits_encoded = conv_enc(sig_bits,'1/2')
 # interleaver
 # sig_bits_interleave = wlanBCCInterleave(sig_bits_encoded,'Non-HT',48);
-# sig_bits_modulated = 2*(sig_bits_interleave-(1/2)); # BPSK modulation
-# p_21 = 1;
-# p_7 = 1;
-# p7 = 1;
-# p21 = -1;
-# sig_fft = zeros(64,1);
-# sig_fft(33+(-26:-22)) = sig_bits_modulated(1:5);
-# sig_fft(33+-21) = p_21;
-# sig_fft(33+(-20:-8)) = sig_bits_modulated(6:18);
-# sig_fft(33+-7) = p_7;
-# sig_fft(33+(-6:-1)) = sig_bits_modulated(19:24);
-# sig_fft(33+(1:6)) = sig_bits_modulated(25:30);
-# sig_fft(33+7) = p7;
-# sig_fft(33+(8:20)) = sig_bits_modulated(31:43);
-# sig_fft(33+21) = p21;
-# sig_fft(33+(22:26)) = sig_bits_modulated(44:48);
-# sig_symb = ifft(fftshift(sig_fft));
-# sig = [...
-#     sig_symb(49:64);... # cyclic prefix
-#     sig_symb;... # data
-#     ];
 
-# preamble = [stf;ltf;sig];
+sig_bits_interleave = interleave_symbs(sig_bits_encoded,NCBPS)
+
+sig_bits_modulated = 2*(np.array(sig_bits_interleave).reshape(len(sig_bits_interleave))-(1/2)) # BPSK modulation
+p_21 = 1
+p_7 = 1
+p7 = 1
+p21 = -1
+sig_fft = np.zeros(64)
+sig_fft[range(32-26,32-22+1)] = sig_bits_modulated[0:5]
+sig_fft[32+-21] = p_21
+sig_fft[range(32-20,32-8+1)] = sig_bits_modulated[5:18]
+sig_fft[32+-7] = p_7
+sig_fft[range(32+-6,32-1+1)] = sig_bits_modulated[18:24]
+sig_fft[range(32+1,32+6+1)] = sig_bits_modulated[24:30]
+sig_fft[32+7] = p7
+sig_fft[range(32+8,32+20+1)] = sig_bits_modulated[30:43]
+sig_fft[32+21] = p21
+sig_fft[range(32+22,32+26+1)] = sig_bits_modulated[43:48]
+
+sig_symb = np.fft.ifft(np.fft.fftshift(sig_fft));
+sig = np.concatenate((sig_symb[48:64],sig_symb));
+
+preamble = np.concatenate((stf,ltf,sig))
 
 # ###########################################################################
 # # PAYLAOD

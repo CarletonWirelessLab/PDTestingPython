@@ -4,6 +4,7 @@ import cmath as cm
 
 
 def conv_enc(bits,code_rate):
+    
     N = len(bits)
     A = np.zeros(N)
     B = np.zeros(N)
@@ -21,8 +22,8 @@ def conv_enc(bits,code_rate):
         T3t = T3
         T4t = T4
         T5t = T5
-        A[n] = bits[n]^ ((T2^T3) ^ (T5^T6))
-        B[n]= bits[n]^ ((T1^T2) ^ (T3^T6))  # update shift registers
+        A[n] = int(bits[n])^ ((int(T2)^int(T3)) ^ (int(T5)^int(T6)))
+        B[n]= int(bits[n])^ ((int(T1)^int(T2)) ^ (int(T3)^int(T6)))  # update shift registers
         T1 = bits[n];
         T2 = T1t
         T3 = T2t
