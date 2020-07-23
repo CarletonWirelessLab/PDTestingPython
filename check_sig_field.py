@@ -1,10 +1,14 @@
 import numpy as np
+from bi2de import bi2de
 
 
 def check_sig_field(rate, res, length, parity, tail):
     rate = np.array(rate)
     res = np.array(res)
     length = np.array(length)
+    length = bi2de(length)
+    print(length)
+    exit()
     parity = np.array(parity)
     tail = np.array(tail)
 
@@ -26,7 +30,7 @@ def check_sig_field(rate, res, length, parity, tail):
             if sum(rate[n, :] == [1, 1, 0, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("--------------------")
-                # print("# PAYLOAD LENGTH = %d BYTES",bi2de(length[n,:]))
+                print("# PAYLOAD LENGTH = %d BYTES", bi2de(length[n,:]))
                 print("# BIT RATE 6 Mbps")
                 print("# MODULATION BPSK")
                 print("# CODE RATE 1/2")

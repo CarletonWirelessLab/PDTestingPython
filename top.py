@@ -4,7 +4,8 @@ from coarse_cfo_correct import coarse_cfo_correct
 from ch_estim import ch_estim
 from sig_field_decoder import sig_field_decoder
 from check_sig_field import check_sig_field
-import numpy as np
+from extract_mac import extract_mac
+
 
 bin_file = "../Bins/Receive25%.bin"
 fraction = 1/60
@@ -16,9 +17,13 @@ complex_data = [*zeros_1000, *complex_data, *zeros_1000]
 pkt_locs = detect_frames(complex_data)
 
 s_corrected = coarse_cfo_correct(complex_data, pkt_locs)
-
+print(s_corrected[(6301 + 160 + 160 + 16):(6301+160+160+80)])
+exit()
 hinv = ch_estim(s_corrected, pkt_locs)  # Matches Matlab code up to here.
 
 rate, res, length, parity, tail = sig_field_decoder(s_corrected, pkt_locs, hinv)
 
 MSC = check_sig_field(rate, res, length, parity, tail)
+
+extract_mac(s_corrected, pkt_locs[:, 0], MSC, hinv)
+
