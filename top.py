@@ -8,7 +8,7 @@ from extract_mac import extract_mac
 import numpy as np
 
 bin_file = "../Bins/Receive25%.bin"
-fraction = 1/60
+fraction = 1/20
 complex_data = raw_to_complex(bin_file, fraction)
 
 complex_data = np.concatenate((np.zeros(1000,dtype=complex), complex_data, np.zeros(1000,dtype=complex)))
@@ -18,11 +18,14 @@ s_corrected = coarse_cfo_correct(complex_data, pkt_locs)
 
 hinv = ch_estim(s_corrected, pkt_locs)  # Matches Matlab code up to here.
 
-# print(s_corrected[(6301+160+160+80+16):(6301+160+160+80+16+64)])
-# exit()
 rate, res, length, parity, tail = sig_field_decoder(s_corrected, pkt_locs, hinv)
 
 MSC = check_sig_field(rate, res, length, parity, tail)
 
-extract_mac(s_corrected, pkt_locs[:, 0], MSC, hinv)
+subtype_duration_bits, MAC1, MAC2, MAC3 = extract_mac(s_corrected, pkt_locs[:, 0], MSC, hinv)
+
+print(np.hstack((MAC1, MAC2, MAC3)))
+#print(MAC1)
+#print(MAC2)
+#print(MAC3)
 
