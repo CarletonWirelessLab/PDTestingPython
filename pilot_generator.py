@@ -1,5 +1,5 @@
 import numpy as np
-
+from scrambler import scrambler
 
 def pilot_generator(Nsym):
     var = np.zeros(Nsym)

@@ -1,8 +1,12 @@
 import numpy as np
 import cmath as cm
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from conv_enc import conv_enc
 from interleave_symbs import interleave_symbs
+from scrambler import scrambler
+from pilot_generator import pilot_generator
+from hex2bi import hex2bi
+from modulate_symbs import modulate_symbs
 def de2bi(n,N):
     bseed= bin(n).replace("0b", "")
     fix = N-len(bseed)
@@ -117,48 +121,55 @@ sig_fft[range(32+8,32+20+1)] = sig_bits_modulated[30:43]
 sig_fft[32+21] = p21
 sig_fft[range(32+22,32+26+1)] = sig_bits_modulated[43:48]
 
-sig_symb = np.fft.ifft(np.fft.fftshift(sig_fft));
-sig = np.concatenate((sig_symb[48:64],sig_symb));
+sig_symb = np.fft.ifft(np.fft.fftshift(sig_fft))
+sig = np.concatenate((sig_symb[48:64],sig_symb))
 
 preamble = np.concatenate((stf,ltf,sig))
 
 # ###########################################################################
 # # PAYLAOD
 # ###########################################################################
-# service_field = zeros(16,1);
+service_field = np.zeros(16)
+# preMAC = np.ones(8*4)
+# MAC1 = np.ones(12*4)
+# MAC2 = np.ones(12*4)
+# MAC3 = np.ones(12*4)
+
 # preMAC = transpose(hexToBinaryVector('08013000',8*4));
 # MAC1 = transpose(hexToBinaryVector('FFFFFFFFFFFF',12*4));
 # MAC2 = transpose(hexToBinaryVector('EEEEEEEEEEEE',12*4));
 # MAC3 = transpose(hexToBinaryVector('AAAAAAAAAAAA',12*4));
-# # MAC1 = transpose(hexToBinaryVector('BEAC09BEAC09',12*4));
-# # MAC2 = transpose(hexToBinaryVector('BEAC08BEAC08',12*4));
-# # MAC3 = transpose(hexToBinaryVector('BEAC07BEAC07',12*4));
-# ppdu = zeros((8*ppdu_length),1);
-# ppdu_tail=zeros(6,1);
 
-# Nsym = ceil((16+(8*4)+(3*4*12)+16+(8*ppdu_length)+6)/NDBPS);
-# Ndata = Nsym*NDBPS;
-# Npad = Ndata - (16+(8*4)+(3*4*12)+16+(8*ppdu_length)+6);
+preMAC = hex2bi('08013000')
+MAC1 = hex2bi('BEAC09BEAC09')
+MAC2 = hex2bi('BEAC08BEAC08')
+MAC3 = hex2bi('BEAC07BEAC07')
+ppdu = np.zeros(8*ppdu_length)
+ppdu_tail=np.zeros(6)
 
-# bits_final=[service_field;preMAC;MAC1;MAC2;MAC3;zeros(16,1);ppdu;ppdu_tail;zeros(Npad,1)];
+Nsym = np.ceil((16+(8*4)+(3*4*12)+16+(8*ppdu_length)+6)/NDBPS)
+Ndata = Nsym*NDBPS
+Npad = (Ndata - (16+(8*4)+(3*4*12)+16+(8*ppdu_length)+6))
 
+bits_final=np.concatenate((service_field,preMAC,MAC1,MAC2,MAC3,np.zeros(16),ppdu,ppdu_tail,np.zeros(int(Npad))))
 
-# seed=93;
-# scrambled_bits = scrambler(bits_final,seed);
-# bits_encoded = conv_enc(scrambled_bits,code_rate);
-# ppdu_samples = zeros(80*Nsym,1);
-# pilot_polarity = pilot_generator(Nsym+1);
-# for n =1:Nsym
-#     bits_inter = interleave_symbs(bits_encoded(((n-1)*NCBPS)+(1:NCBPS)),NCBPS);
-#     iq_symb_fft = modulate_symbs(bits_inter,pilot_polarity(n+1),MSC);
-#     iq_symb = ifft(fftshift(iq_symb_fft));
-#     cyclic_prefix = iq_symb(49:64);
-#     iq_symb_80 = [cyclic_prefix;iq_symb];
-#     ppdu_samples(((n-1)*80)+(1:80)) = iq_symb_80;
-#     # modulate and pilots -> 64 samples
-#     # cyclic prefix -> take last 16 samples put them at the front and add
-#     # to 64
-#     # concatenate in time domain
-# end
+seed=93
+scrambled_bits = scrambler(bits_final,seed)
+bits_encoded = conv_enc(scrambled_bits,code_rate)
+ppdu_samples = np.zeros(80*int(Nsym),dtype=complex)
+pilot_polarity = pilot_generator(int(Nsym+1))
+for n in range (1,int(Nsym)):
+    m1 = int(((n-1)*NCBPS)+1)
+    m2 = int(1+NCBPS+((n-1)*NCBPS))
+    symb_bits_encoded = [bits_encoded[m] for m in range(m1,m2)]
+    bits_inter = interleave_symbs(symb_bits_encoded,NCBPS)
+    iq_symb_fft = modulate_symbs(bits_inter,pilot_polarity[n],MSC)
+    iq_symb = np.fft.ifft(np.fft.fftshift(iq_symb_fft))
+    cyclic_prefix = iq_symb[np.arange(48,64)]
+    iq_symb_80 = np.concatenate((cyclic_prefix,iq_symb))
+    ppdu_samples[((n-1)*80)+np.arange(0,80)] = iq_symb_80
+    # cyclic prefix -> take last 16 samples put them at the front and add
+    # to 64
+    # concatenate in time domain
 
-# s = [preamble;ppdu_samples];
+s = np.concatenate((preamble,ppdu_samples))

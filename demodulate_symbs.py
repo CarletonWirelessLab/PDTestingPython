@@ -11,8 +11,14 @@ def demodulate_symbs(symbs, MSCn, hinvn):
     # symb_fft_48 = symb_fft[start_index:end_index]
     symb_fft_48 = [symb_fft[j] for j in v]
     if MSCn == 0 or MSCn == 1:
-        symb_fft_48 = np.nonzero(symb_fft_48 > 0)
-        bits_demod = np.real(symb_fft_48)
+        # symb_fft_48 = np.nonzero((symb_fft_48) > 0)
+        bits_demod = []
+        for n in range(0, 47 + 1):
+            re = np.real(symb_fft_48[n])
+            if re > 0:
+                bits_demod = bits_demod + [1]
+            else:
+                bits_demod = bits_demod + [0]        
     elif MSCn == 2 or MSCn == 3:
         for n in range(0, 47 + 1):
             re = np.real(symb_fft_48[n])

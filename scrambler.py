@@ -41,8 +41,8 @@ def  scrambler(bits,seed):
         x5t = x5
         x6t = x6
         x7t = x7
-        var = x4t^x7t
-        scrambled_bits[n] =var^bits[n]
+        var = int(x4t)^int(x7t)
+        scrambled_bits[n] =int(var)^int(bits[n])
         x1 = var
         x2 = x1t
         x3 = x2t
