@@ -10,7 +10,8 @@ a96 = [(k96[j]-1) for j in range(0,96)]
 a192 = [(k192[j]-1) for j in range(0,192)]
 a288 = [(k288[j]-1) for j in range(0,288)]
 
-def deinterleave_symbs(bits,NCBPS):
+
+def deinterleave_symbs(bits, NCBPS):
     bits_deinter = np.zeros(int(NCBPS))
     if NCBPS == 48:
         bits_deinter = [bits[j] for j in a48]

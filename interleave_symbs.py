@@ -10,7 +10,8 @@ a96 = [(w96[j]-1) for j in range(0,96)]
 a192 = [(w192[j]-1) for j in range(0,192)]
 a288 = [(w288[j]-1) for j in range(0,288)]
 
-def interleave_symbs(bits,NCBPS):
+
+def interleave_symbs(bits, NCBPS):
     bits_inter = np.zeros(NCBPS)    
     if NCBPS == 48:
         bits_inter = [bits[j] for j in a48]

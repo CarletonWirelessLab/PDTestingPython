@@ -19,7 +19,6 @@ def extract_mac(complex_data, pkt_start, MSC, hinv):
     for n in range(0, pkt_count):
         MSCn = MSC[n]
         pkt_startn = pkt_start[n]
-        bitstream = []
         bits_deinter = []
         if MSCn == 0:
             NCBPS = 48
@@ -52,7 +51,7 @@ def extract_mac(complex_data, pkt_start, MSC, hinv):
             bits_deinter = bits_deinter + deinterleave_symbs(bits_demod, NCBPS)
 
         bits_decode = decode_symbs(bits_deinter, MSCn)
-        bits_descram = descrambler(bits_decode)  # correlation between python and matlab is 1 up to here
+        bits_descram = descrambler(bits_decode)
         bitstream = bits_descram
         [mac1, mac2, mac3] = decode_mac(bitstream)
         MAC1 = MAC1 + [mac1]
