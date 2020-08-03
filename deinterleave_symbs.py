@@ -5,12 +5,13 @@ k96 = np.array(k96).reshape(96)
 k192 = np.array(k192).reshape(192)
 k288 = np.array(k288).reshape(288)
 
-a48 = [(k48[j]-1) for j in range(0,48)]
-a96 = [(k96[j]-1) for j in range(0,96)]
-a192 = [(k192[j]-1) for j in range(0,192)]
-a288 = [(k288[j]-1) for j in range(0,288)]
+a48 = [(k48[j]-1) for j in range(0, 48)]
+a96 = [(k96[j]-1) for j in range(0, 96)]
+a192 = [(k192[j]-1) for j in range(0, 192)]
+a288 = [(k288[j]-1) for j in range(0, 288)]
 
 
+# The purpose of this function is to reorder the message bits of the frame to their original sequence
 def deinterleave_symbs(bits, NCBPS):
     bits_deinter = np.zeros(int(NCBPS))
     if NCBPS == 48:

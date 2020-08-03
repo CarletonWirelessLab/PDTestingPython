@@ -1,17 +1,17 @@
 import numpy as np
 
 
+# The purpose of this function is to demodulate symbols into bits based on the information provided
+# in the Signal Field of the frame
 def demodulate_symbs(symbs, MSCn, hinvn):
     bits_demod = []
-    v = [-26, -25, -24, -23, -22, -20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26]
+    v = [-26, -25, -24, -23, -22, -20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -6, -5, -4, -3, -2, -1,
+         1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26]
     v = np.array(v) + 32
     symb_fft = np.fft.fftshift(np.fft.fft(symbs)) * hinvn
-    # start_index = int(min(v) + 32)
-    # end_index = int(max(v) + 32 + 1)
-    # symb_fft_48 = symb_fft[start_index:end_index]
     symb_fft_48 = [symb_fft[j] for j in v]
-    if MSCn == 0 or MSCn == 1:
-        # symb_fft_48 = np.nonzero((symb_fft_48) > 0)
+
+    if MSCn == 0 or MSCn == 1:  # BPSK modulation
         bits_demod = []
         for n in range(0, 47 + 1):
             re = np.real(symb_fft_48[n])
@@ -19,7 +19,7 @@ def demodulate_symbs(symbs, MSCn, hinvn):
                 bits_demod = bits_demod + [1]
             else:
                 bits_demod = bits_demod + [0]        
-    elif MSCn == 2 or MSCn == 3:
+    elif MSCn == 2 or MSCn == 3:  # QPSK Modulation
         for n in range(0, 47 + 1):
             re = np.real(symb_fft_48[n])
             im = np.imag(symb_fft_48[n])
@@ -31,7 +31,7 @@ def demodulate_symbs(symbs, MSCn, hinvn):
                 bits_demod = bits_demod + [1]
             else:
                 bits_demod = bits_demod + [0]
-    elif MSCn == 4 or MSCn == 5:
+    elif MSCn == 4 or MSCn == 5:  # 16-QAM
         p_21 = abs(np.real(symb_fft[32+-21]))
         p_7 = abs(np.real(symb_fft[32+-7]))
         p7 = abs(np.real(symb_fft[32+7]))
@@ -62,7 +62,7 @@ def demodulate_symbs(symbs, MSCn, hinvn):
                 else:
                     bits_demod = bits_demod + [0, 1]
 
-    elif MSCn == 6 or MSCn == 7:
+    elif MSCn == 6 or MSCn == 7:  # 64-QAM
         p_21 = abs(np.real(symb_fft[32 + -21]))
         p_7 = abs(np.real(symb_fft[32 + -7]))
         p7 = abs(np.real(symb_fft[32 + 7]))

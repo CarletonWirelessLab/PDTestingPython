@@ -1,6 +1,8 @@
 import numpy as np
 
 
+# The Purpose of this function is to de-scramble the message bits after initially
+# being scrambled on the transmitter side
 def descrambler(bits):
     bit_count = len(bits)
     descrambled_bits = np.arange(0, bit_count) * 0

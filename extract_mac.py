@@ -46,7 +46,7 @@ def extract_mac(complex_data, pkt_start, MSC, hinv):
             numDBPS = 216
             
         for m in range(1, math.ceil(192/numDBPS)+1):
-            symbs = strip_symbs(complex_data, pkt_startn, m)
+            symbs = strip_symbs(complex_data, pkt_startn, m)  # get just symbols
             bits_demod = demodulate_symbs(symbs, MSCn, hinv[:, n])
             bits_deinter = bits_deinter + deinterleave_symbs(bits_demod, NCBPS)
 
