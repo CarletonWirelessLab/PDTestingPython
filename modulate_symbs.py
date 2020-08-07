@@ -33,23 +33,23 @@ def modulate_symbs(bits_inter,pilot_polarity,MSC):
         p21 = -3
         m = 0
         for n  in range(0,192,4):          
-            if np.array_equal(bits_inter[n+np.array([0,1])], [0, 0]):   #bits_inter[n+np.array([0,1])]==[0,0]:
+            if np.array_equal(bits_inter[n:(n+2)], [0, 0]):   #bits_inter[n+np.array([0,1])]==[0,0]:
                 bits_modulated[m] = -3
-            elif np.array_equal(bits_inter[n+np.array([0,1])], [0, 1]): 
+            elif np.array_equal((bits_inter[n:(n+2)]), [0, 1]): 
                 bits_modulated[m] = -1
-            elif np.array_equal(bits_inter[n+np.array([0,1])], [1, 1]): 
+            elif np.array_equal((bits_inter[n:(n+2)]), [1, 1]): 
                 bits_modulated[m] = 1
-            elif np.array_equal(bits_inter[n+np.array([0,1])], [1, 0]): 
+            elif np.array_equal((bits_inter[n:(n+2)]), [1, 0]): 
                 bits_modulated[m] = 3
         
         
-            if np.array_equal(bits_inter[n+np.array([2,3])], [0, 0]):
+            if np.array_equal((bits_inter[(n+2):(n+4)]), [0, 0]):
                 bits_modulated[m] = bits_modulated[m]+(1j*-3)
-            elif np.array_equal(bits_inter[n+np.array([2,3])], [0, 1]):
+            elif np.array_equal((bits_inter[(n+2):(n+4)]), [0, 1]):
                 bits_modulated[m] = bits_modulated[m]+(1j*-1)
-            elif np.array_equal(bits_inter[n+np.array([2,3])], [1, 1]): 
+            elif np.array_equal((bits_inter[(n+2):(n+4)]), [1, 1]):
                 bits_modulated[m] == bits_modulated[m]+(1j*1)
-            elif np.array_equal(bits_inter[n+np.array([2,3])], [1, 0]):
+            elif np.array_equal((bits_inter[(n+2):(n+4)]), [1, 0]):
                 bits_modulated[m] = bits_modulated[m]+(1j*3)
             
             m = m + 1
@@ -61,39 +61,39 @@ def modulate_symbs(bits_inter,pilot_polarity,MSC):
         p21 = -7
         m = 0
         for  n in range( 0,288,6) :             
-            if np.array_equal(bits_inter[n+np.array([0,1,2])], [0, 0,0]): 
+            if np.array_equal(bits_inter[n:(n+3)], [0, 0,0]): 
                 bits_modulated[m] = -7
-            elif np.array_equal(bits_inter[n+np.array([0,1,2])], [0, 0,1]): 
+            elif np.array_equal(bits_inter[n:(n+3)], [0, 0,1]): 
                 bits_modulated[m] = -5
-            elif np.array_equal(bits_inter[n+np.array([0,1,2])], [0, 1,1]): 
+            elif np.array_equal(bits_inter[n:(n+3)], [0, 1,1]): 
                 bits_modulated[m] = -3
-            elif np.array_equal(bits_inter[n+np.array([0,1,2])], [0, 1,0]): 
+            elif np.array_equal(bits_inter[n:(n+3)], [0, 1,0]): 
                 bits_modulated[m] = -1
-            elif np.array_equal(bits_inter[n+np.array([0,1,2])], [1, 1,0]): 
+            elif np.array_equal(bits_inter[n:(n+3)], [1, 1,0]): 
                 bits_modulated[m] = 1
-            elif np.array_equal(bits_inter[n+np.array([0,1,2])], [1, 1,1]): 
+            elif np.array_equal(bits_inter[n:(n+3)], [1, 1,1]): 
                 bits_modulated[m] = 3
-            elif np.array_equal(bits_inter[n+np.array([0,1,2])], [1, 0,1]): 
+            elif np.array_equal(bits_inter[n:(n+3)], [1, 0,1]): 
                 bits_modulated[m] = 5
-            elif np.array_equal(bits_inter[n+np.array([0,1,2])], [1, 0,0]): 
+            elif np.array_equal(bits_inter[n:(n+3)], [1, 0,0]): 
                 bits_modulated[m] = 7
         
         
-            if np.array_equal(bits_inter[n+np.array([3,4,5])], [0, 0,0]): 
+            if np.array_equal(bits_inter[(n+3):(n+6)], [0, 0,0]): 
                 bits_modulated[m] = bits_modulated[m]+(1j*-7)
-            elif np.array_equal(bits_inter[n+np.array([3,4,5])], [0, 0,1]): 
+            elif np.array_equal(bits_inter[(n+3):(n+6)], [0, 0,1]): 
                 bits_modulated[m] = bits_modulated[m]+(1j*-5)
-            elif np.array_equal(bits_inter[n+np.array([3,4,5])], [0, 1,1]): 
+            elif np.array_equal(bits_inter[(n+3):(n+6)], [0, 1,1]): 
                 bits_modulated[m] = bits_modulated[m]+(1j*-3)
-            elif np.array_equal(bits_inter[n+np.array([3,4,5])], [0, 1,0]): 
+            elif np.array_equal(bits_inter[(n+3):(n+6)], [0, 1,0]): 
                 bits_modulated[m] = bits_modulated[m]+(1j*-1)
-            elif np.array_equal(bits_inter[n+np.array([3,4,5])], [1, 1,0]): 
+            elif np.array_equal(bits_inter[(n+3):(n+6)], [1, 1,0]): 
                 bits_modulated[m] = bits_modulated[m]+(1j*1)
-            elif np.array_equal(bits_inter[n+np.array([3,4,5])], [1, 1,1]): 
+            elif np.array_equal(bits_inter[(n+3):(n+6)], [1, 1,1]): 
                 bits_modulated[m] = bits_modulated[m]+(1j*3)
-            elif np.array_equal(bits_inter[n+np.array([3,4,5])], [1, 0,1]): 
+            elif np.array_equal(bits_inter[(n+3):(n+6)], [1, 0,1]): 
                 bits_modulated[m] = bits_modulated[m]+(1j*5)
-            elif np.array_equal(bits_inter[n+np.array([3,4,5])], [1, 0,0]): 
+            elif np.array_equal(bits_inter[(n+3):(n+6)], [1, 0,0]): 
                 bits_modulated[m] = bits_modulated[m]+(1j*7)
             m = m + 1
     

@@ -51,12 +51,9 @@ ltf[96:160] = lts # repeat the short training sequence 2.5 times -> 32 64 64 = 1
 # # SIGNAL FIELD
 # ###########################################################################
 ppdu_length = 2000; # payload length in Bytes < 2^12
-code_rate = '1/2';
-MSC = 'BPSK';
+code_rate = '3/4';
+MSC = '64-QAM';
 RATE = np.zeros(4);
-
-
-
 
 
 if MSC == 'BPSK':
@@ -102,7 +99,7 @@ sig_bits_encoded = conv_enc(sig_bits,'1/2')
 # interleaver
 # sig_bits_interleave = wlanBCCInterleave(sig_bits_encoded,'Non-HT',48);
 
-sig_bits_interleave = interleave_symbs(sig_bits_encoded,NCBPS)
+sig_bits_interleave = interleave_symbs(sig_bits_encoded,48)
 
 sig_bits_modulated = 2*(np.array(sig_bits_interleave).reshape(len(sig_bits_interleave))-(1/2)) # BPSK modulation
 p_21 = 1
@@ -159,7 +156,7 @@ bits_encoded = conv_enc(scrambled_bits,code_rate)
 ppdu_samples = np.zeros(80*int(Nsym),dtype=complex)
 pilot_polarity = pilot_generator(int(Nsym+1))
 for n in range (1,int(Nsym)):
-    m1 = int(((n-1)*NCBPS)+1)
+    m1 = int(((n-1)*NCBPS))
     m2 = int(1+NCBPS+((n-1)*NCBPS))
     symb_bits_encoded = [bits_encoded[m] for m in range(m1,m2)]
     bits_inter = interleave_symbs(symb_bits_encoded,NCBPS)

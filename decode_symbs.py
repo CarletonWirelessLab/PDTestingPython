@@ -1,9 +1,10 @@
 from depuncture_bits import depuncture_bits
 from convdenc import convdenc
+import numpy as np
 
 
 def decode_symbs(bits_deinter, MSCn):
-    bits_depunct = depuncture_bits(bits_deinter, MSCn)
+    bits_depunct = np.array(depuncture_bits(bits_deinter, MSCn))
 
     if MSCn == 0 or MSCn == 2 or MSCn == 4:
         bits_decode = convdenc(bits_depunct, '1/2')
