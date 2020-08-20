@@ -6,6 +6,7 @@ from deinterleave_symbs import deinterleave_symbs
 from decode_symbs import decode_symbs
 from descrambler import descrambler
 from decode_mac import decode_mac
+from decode_type import decode_type
 
 
 def extract_mac(complex_data, pkt_start, MSC, hinv):
@@ -14,7 +15,7 @@ def extract_mac(complex_data, pkt_start, MSC, hinv):
     MAC1 = []
     MAC2 = []
     MAC3 = []
-    subtype_duration_bits = []
+    packet_type = []
 
     for n in range(0, pkt_count):
         MSCn = MSC[n]
@@ -58,7 +59,8 @@ def extract_mac(complex_data, pkt_start, MSC, hinv):
         MAC2 = MAC2 + [mac2]
         MAC3 = MAC3 + [mac3]
 
-        subtype_duration_bits = [subtype_duration_bits, bitstream[16+np.arange(0, 32)]]
+        packet_type = packet_type + [decode_type(bitstream[18 + np.arange(0, 6)])]
 
-    return subtype_duration_bits, np.array(MAC1), np.array(MAC2), np.array(MAC3)
+
+    return packet_type, np.array(MAC1), np.array(MAC2), np.array(MAC3)
 

@@ -14,8 +14,8 @@ from top_tx import s
 # Based off of the 802.11a - 1999 standards
 
 
-# bin_file = "../Bins/Receive25%.bin"
-# fraction = 1/60
+# bin_file = "../Bins/test.bin"
+# fraction = 1
 # complex_data = raw_to_complex(bin_file, fraction)
 # complex_data = np.concatenate((np.zeros(1000, dtype=complex), complex_data, np.zeros(1000, dtype=complex)))
 
@@ -27,17 +27,17 @@ s_corrected = coarse_cfo_correct(complex_data, pkt_locs)  # Coarse Carrier Frequ
 hinv = ch_estim(s_corrected, pkt_locs)  # Channel estimation (LTF)
 rate, res, length, parity, tail = sig_field_decoder(s_corrected, pkt_locs, hinv)  # Channel estimation (LTF)
 MSC, output_array = check_sig_field(rate, res, length, parity, tail)  # Check that packet information is valid
-subtype_duration_bits, MAC1, MAC2, MAC3 = extract_mac(s_corrected, pkt_locs[:, 0], MSC, hinv)  # Extract MAC addresses from packet payload
+packet_type, MAC1, MAC2, MAC3 = extract_mac(s_corrected, pkt_locs[:, 0], MSC, hinv)  # Extract MAC addresses from packet payload
 
 # Output Data to .CSV:
 mac_data = []
-mac_data.append([MAC1, MAC2, MAC3])
+mac_data.append([MAC1, MAC2, MAC3, packet_type])
 mac_data = np.array(mac_data)
 mac_data = mac_data[0, :, :]
 mac_data = mac_data.T
 pkt_indices = np.arange(0, len(pkt_locs)).T
 packet_data = np.concatenate((pkt_locs, output_array, mac_data), axis=1)
-top_row = ["Start Sample", "End Sample", "Payload length", "Bit Rate", "Modulation", "Code Rate", "MAC1", "MAC2", "MAC3"]
+top_row = ["Start Sample", "End Sample", "Payload length", "Bit Rate", "Modulation", "Code Rate", "MAC1", "MAC2", "MAC3", "Packet Type"]
 top_row = np.array(top_row)
 packet_data = np.vstack((top_row, packet_data))
 np.savetxt("Packet_Data.csv", packet_data, delimiter=",", fmt="%s")

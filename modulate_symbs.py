@@ -48,7 +48,7 @@ def modulate_symbs(bits_inter,pilot_polarity,MSC):
             elif np.array_equal((bits_inter[(n+2):(n+4)]), [0, 1]):
                 bits_modulated[m] = bits_modulated[m]+(1j*-1)
             elif np.array_equal((bits_inter[(n+2):(n+4)]), [1, 1]):
-                bits_modulated[m] == bits_modulated[m]+(1j*1)
+                bits_modulated[m] = bits_modulated[m]+(1j*1)
             elif np.array_equal((bits_inter[(n+2):(n+4)]), [1, 0]):
                 bits_modulated[m] = bits_modulated[m]+(1j*3)
             
