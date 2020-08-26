@@ -1,4 +1,4 @@
-from raw_to_complex import raw_to_complex
+# from raw_to_complex import raw_to_complex
 from detect_frames import detect_frames
 from coarse_cfo_correct import coarse_cfo_correct
 from ch_estim import ch_estim
@@ -13,6 +13,7 @@ from top_tx import s
 # information for the purpose of capturing wifi packets.
 # Based off of the 802.11a - 1999 standards
 
+#def wifi_rx(s):  # needs to be fixed
 
 # bin_file = "../Bins/test.bin"
 # fraction = 1
@@ -42,3 +43,18 @@ top_row = np.array(top_row)
 packet_data = np.vstack((top_row, packet_data))
 np.savetxt("Packet_Data.csv", packet_data, delimiter=",", fmt="%s")
 print(packet_data)
+mac1_array = MAC1
+length_array = output_array[:,0]
+type_array = packet_type
+rate_array = output_array[:,1]
+start_array = pkt_locs[:,0]
+end_array = pkt_locs[:,1]
+print("test")
+print(mac1_array)
+print(length_array)
+print(type_array)
+print(rate_array)
+print(start_array)
+print(end_array)
+
+#return mac1_array, length_array, type_array, rate_array, start_array, end_array
