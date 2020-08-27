@@ -6,7 +6,15 @@ from sig_field_decoder import sig_field_decoder
 from check_sig_field import check_sig_field
 from extract_mac import extract_mac
 import numpy as np
-from top_tx import s
+#from top_tx import s
+from transmit_packet import transmit_packet
+# BPSK code rates = {1/2,3/4}
+# QPSK code rates = {1/2,3/4}
+# 16-QAM code rates = {1/2,3/4}
+# 64-QAM code rates = {2/3,3/4}
+#transmit packet with certain parameters (ppdu_length,code_rate,MSC)
+s=transmit_packet(1000,'3/4','64-QAM')  
+
 
 
 # This program is a post-processing receiver which takes raw data in the form of a sampled waveform and extracts frame
