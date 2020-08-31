@@ -1,23 +1,14 @@
 import numpy as np
 import cmath as cm
-# import matplotlib.pyplot as plt
 from conv_enc import conv_enc
 from interleave_symbs import interleave_symbs
 from scrambler import scrambler
 from pilot_generator import pilot_generator
 from hex2bi import hex2bi
 from modulate_symbs import modulate_symbs
-def de2bi(n,N):
-    bseed= bin(n).replace("0b", "")
-    fix = N-len(bseed)
-    pad = np.zeros(fix)
-    pad=pad.tolist()
-    y=[]         
-    for i in range(len(pad)):
-        y.append(int(pad[i]))  
-    for i in range(len(bseed)):
-        y.append(int(bseed[i]))
-    return y
+from de2bi import de2bi
+
+
 # clear all;
 # clc;
 ###########################################################################
@@ -29,10 +20,13 @@ sts_fft[32+np.array([-20,-12,-8,4,8])] = -cm.sqrt(13/6)*(1+1j)*np.ones(5); # car
 
 sts = np.fft.ifft((np.fft.fftshift(sts_fft))) # inverse FFT to get 64 samples in time domain
 
-stf = np.zeros(160,dtype=complex)
+# NORMALIZE STS:
+sts = sts / np.sqrt(np.real(sum(sts*np.conjugate(sts))))
+
+stf = np.zeros(160, dtype=complex)
 stf[0:64] = sts
-stf[64:128]=sts
-stf[128:160] = sts[0:32] # repeat the short training sequence 2.5 times -> 64 64 32 = 160
+stf[64:128] = sts
+stf[128:160] = sts[0:32]  # repeat the short training sequence 2.5 times -> 64 64 32 = 160
 # plt.plot(range(0,160),np.real(stf))
 
 # ###########################################################################
@@ -42,6 +36,8 @@ stf[128:160] = sts[0:32] # repeat the short training sequence 2.5 times -> 64 64
 
 lts_fft= np.array([0,0,0,0,0,0,1,1,-1,-1,1,1,-1,1,-1,1,1,1,1,1,1,-1,-1,1,1,-1,1,-1,1,1,1,1,0,1,-1,-1,1,1,-1,1,-1,1,-1,-1,-1,-1,-1,1,1,-1,-1,1,-1,1,-1,1,1,1,1,0,0,0,0,0],dtype=complex)
 lts = np.fft.ifft(np.fft.fftshift(lts_fft)); # inverse FFT to get 64 samples in time domain
+
+lts = lts / np.sqrt(np.real(sum(lts*np.conjugate(lts))))
 ltf = np.zeros(160,dtype=complex)
 ltf[0:32] = lts[32:64]
 ltf[32:96]=lts
@@ -119,6 +115,8 @@ sig_fft[32+21] = p21
 sig_fft[range(32+22,32+26+1)] = sig_bits_modulated[43:48]
 
 sig_symb = np.fft.ifft(np.fft.fftshift(sig_fft))
+# NORMALIZE:
+sig_symb = sig_symb / np.sqrt(np.real(sum(sig_symb*np.conjugate(sig_symb))))
 sig = np.concatenate((sig_symb[48:64],sig_symb))
 
 preamble = np.concatenate((stf,ltf,sig))
@@ -162,6 +160,9 @@ for n in range (1,int(Nsym)):
     bits_inter = interleave_symbs(symb_bits_encoded,NCBPS)
     iq_symb_fft = modulate_symbs(bits_inter,pilot_polarity[n],MSC)
     iq_symb = np.fft.ifft(np.fft.fftshift(iq_symb_fft))
+    iq_symb = iq_symb / np.sqrt(np.real(sum(iq_symb*np.conjugate(iq_symb))))
+
+
     cyclic_prefix = iq_symb[np.arange(48,64)]
     iq_symb_80 = np.concatenate((cyclic_prefix,iq_symb))
     ppdu_samples[((n-1)*80)+np.arange(0,80)] = iq_symb_80

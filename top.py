@@ -6,14 +6,8 @@ from sig_field_decoder import sig_field_decoder
 from check_sig_field import check_sig_field
 from extract_mac import extract_mac
 import numpy as np
-#from top_tx import s
-from transmit_packet import transmit_packet
-# BPSK code rates = {1/2,3/4}
-# QPSK code rates = {1/2,3/4}
-# 16-QAM code rates = {1/2,3/4}
-# 64-QAM code rates = {2/3,3/4}
-#transmit packet with certain parameters (ppdu_length,code_rate,MSC)
-s=transmit_packet(1000,'3/4','64-QAM')  
+from top_tx import s
+import matplotlib.pyplot as plt
 
 
 
@@ -31,6 +25,10 @@ s=transmit_packet(1000,'3/4','64-QAM')
 # Append 1000 zeros at front and back to pad complex data:
 complex_data = np.concatenate((np.zeros(1000, dtype=complex), s, np.zeros(1000, dtype=complex),s,np.zeros(1000,dtype=complex)))
 pkt_locs = detect_frames(complex_data)  # Determine start and end sample locations of each frame in the raw data
+
+plt.plot(np.abs(s))
+plt.show()
+
 
 s_corrected = coarse_cfo_correct(complex_data, pkt_locs)  # Coarse Carrier Frequency Offset correction (STF)
 hinv = ch_estim(s_corrected, pkt_locs)  # Channel estimation (LTF)
@@ -57,12 +55,5 @@ type_array = packet_type
 rate_array = output_array[:,1]
 start_array = pkt_locs[:,0]
 end_array = pkt_locs[:,1]
-print("test")
-print(mac1_array)
-print(length_array)
-print(type_array)
-print(rate_array)
-print(start_array)
-print(end_array)
 
 #return mac1_array, length_array, type_array, rate_array, start_array, end_array
