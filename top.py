@@ -6,7 +6,8 @@ from sig_field_decoder import sig_field_decoder
 from check_sig_field import check_sig_field
 from extract_mac import extract_mac
 import numpy as np
-from top_tx import s
+# from top_tx import s
+from transmit_packet import transmit_packet
 import matplotlib.pyplot as plt
 
 
@@ -15,7 +16,7 @@ import matplotlib.pyplot as plt
 # information for the purpose of capturing wifi packets.
 # Based off of the 802.11a - 1999 standards
 
-#def wifi_rx(s):  # needs to be fixed
+# def wifi_rx(s):  # needs to be fixed
 
 # bin_file = "../Bins/test.bin"
 # fraction = 1
@@ -23,6 +24,7 @@ import matplotlib.pyplot as plt
 # complex_data = np.concatenate((np.zeros(1000, dtype=complex), complex_data, np.zeros(1000, dtype=complex)))
 
 # Append 1000 zeros at front and back to pad complex data:
+s = transmit_packet(2000, "1/2", "BPSK", "BEAC09BEAC04", "Data")
 complex_data = np.concatenate((np.zeros(1000, dtype=complex), s, np.zeros(1000, dtype=complex),s,np.zeros(1000,dtype=complex)))
 pkt_locs = detect_frames(complex_data)  # Determine start and end sample locations of each frame in the raw data
 
@@ -35,7 +37,7 @@ hinv = ch_estim(s_corrected, pkt_locs)  # Channel estimation (LTF)
 rate, res, length, parity, tail = sig_field_decoder(s_corrected, pkt_locs, hinv)  # Channel estimation (LTF)
 MSC, output_array = check_sig_field(rate, res, length, parity, tail)  # Check that packet information is valid
 packet_type, MAC1, MAC2, MAC3 = extract_mac(s_corrected, pkt_locs[:, 0], MSC, hinv)  # Extract MAC addresses from packet payload
-
+print(packet_type)
 # Output Data to .CSV:
 mac_data = []
 mac_data.append([MAC1, MAC2, MAC3, packet_type])
@@ -50,10 +52,8 @@ packet_data = np.vstack((top_row, packet_data))
 np.savetxt("Packet_Data.csv", packet_data, delimiter=",", fmt="%s")
 print(packet_data)
 mac1_array = MAC1
-length_array = output_array[:,0]
+length_array = output_array[:, 0]
 type_array = packet_type
-rate_array = output_array[:,1]
-start_array = pkt_locs[:,0]
-end_array = pkt_locs[:,1]
-
-#return mac1_array, length_array, type_array, rate_array, start_array, end_array
+rate_array = output_array[:, 1]
+start_array = pkt_locs[:, 0]
+end_array = pkt_locs[:, 1]

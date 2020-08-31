@@ -10,7 +10,7 @@ from modulate_symbs import modulate_symbs
 from de2bi import de2bi
 
 
-def transmit_packet(ppdu_length, code_rate, MSC, mac1):  # , subtype)
+def transmit_packet(ppdu_length, code_rate, MSC, mac1, subtype):
     # BPSK code rates = {1/2,3/4}
     # QPSK code rates = {1/2,3/4}
     # 16-QAM code rates = {1/2,3/4}
@@ -143,7 +143,11 @@ def transmit_packet(ppdu_length, code_rate, MSC, mac1):  # , subtype)
     # MAC2 = transpose(hexToBinaryVector('EEEEEEEEEEEE',12*4));
     # MAC3 = transpose(hexToBinaryVector('AAAAAAAAAAAA',12*4));
 
-    preMAC = hex2bi('08013000')
+    if subtype == "Beacon":
+        field = "08013000"  # [00 1000] management, beacon
+    else:
+        field = '20013000'  # [00 0000] data, data
+    preMAC = hex2bi(field)  # Frame control field
     MAC1 = hex2bi(mac1)
     MAC2 = hex2bi('BEAC08BEAC08')
     MAC3 = hex2bi('BEAC07BEAC07')
