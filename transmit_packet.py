@@ -91,7 +91,7 @@ def transmit_packet(ppdu_length, code_rate, MSC, mac1, subtype): # ppdu_extra):
         RATE[2:4] = [0, 1]
 
     RES = np.zeros(1)  # reserved bit
-    LENGTH = np.flip((np.array(de2bi(min(ppdu_length, (2 ** 12) - 1), 12))).T)  # length bits in binary
+    LENGTH = np.flip((np.array(de2bi(min(ppdu_length, (2 ** 12) - 1), 12))).T, 0)  # length bits in binary
     x = np.concatenate((RATE, LENGTH))
     PARITY = np.sum(x) % 2 * np.ones(1)  # even parity
     TAIL = np.zeros(6)  # tail of 6 zeros
