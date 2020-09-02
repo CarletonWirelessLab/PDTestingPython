@@ -11,14 +11,7 @@ import numpy as np
 # information for the purpose of capturing wifi packets.
 # Based off of the 802.11a - 1999 standards
 
-def wifi_rx(s):  # needs to be fixed
-
-    # bin_file = "../Bins/test.bin"
-    # fraction = 1
-    # complex_data = raw_to_complex(bin_file, fraction)
-    # complex_data = np.concatenate((np.zeros(1000, dtype=complex), complex_data, np.zeros(1000, dtype=complex)))
-
-    # Append 1000 zeros at front and back to pad complex data:
+def wifi_rx(s):
     complex_data = np.concatenate((np.zeros(1000, dtype=complex), s, np.zeros(1000, dtype=complex),s,np.zeros(1000,dtype=complex)))
     pkt_locs = detect_frames(complex_data)  # Determine start and end sample locations of each frame in the raw data
 
@@ -44,14 +37,7 @@ def wifi_rx(s):  # needs to be fixed
     mac1_array = MAC1
     length_array = output_array[:,0]
     type_array = packet_type
-    rate_array = output_array[:,1]
-    start_array = pkt_locs[:,0]
-    end_array = pkt_locs[:,1]
-    # print("test")
-    # print(mac1_array)
-    # print(length_array)
-    # print(type_array)
-    # print(rate_array)
-    # print(start_array)
-    # print(end_array)
+    rate_array = output_array[:, 1]
+    start_array = pkt_locs[:, 0]
+    end_array = pkt_locs[:, 1]
     return mac1_array, length_array, type_array, rate_array, start_array, end_array

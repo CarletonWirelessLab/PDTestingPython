@@ -40,7 +40,7 @@ def check_sig_field(rate, res, length, parity, tail):
                 print("# CODE RATE 1/2")
                 print("--------------------")
                 MSC[n] = 0
-                output_array.append([str(bi2de(length[n, :])), 6, "BPSK Modulation", "0.5"])
+                output_array.append([bi2de(length[n, :]), 6, "BPSK Modulation", "0.5"])
             elif sum(rate[n, :] == [1, 1, 1, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
@@ -50,7 +50,7 @@ def check_sig_field(rate, res, length, parity, tail):
                 print("# CODE RATE 3/4")
                 print("--------------------")
                 MSC[n] = 1
-                output_array.append([str(bi2de(length[n, :])), 9, "BPSK Modulation", "0.75"])
+                output_array.append([bi2de(length[n, :]), 9, "BPSK Modulation", "0.75"])
 
             elif sum(rate[n, :] == [0, 1, 0, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
@@ -61,7 +61,7 @@ def check_sig_field(rate, res, length, parity, tail):
                 print("# CODE RATE 1/2")
                 print("--------------------")
                 MSC[n] = 2
-                output_array.append([str(bi2de(length[n, :])), 12, "QPSK Modulation", "0.5"])
+                output_array.append([bi2de(length[n, :]), 12, "QPSK Modulation", "0.5"])
             elif sum(rate[n, :] == [0, 1, 1, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
@@ -71,7 +71,7 @@ def check_sig_field(rate, res, length, parity, tail):
                 print("# CODE RATE 3/4")
                 print("--------------------")
                 MSC[n] = 3
-                output_array.append([str(bi2de(length[n, :])), 18, "QPSK Modulation", "0.75"])
+                output_array.append([bi2de(length[n, :]), 18, "QPSK Modulation", "0.75"])
             elif sum(rate[n, :] == [1, 0, 0, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
@@ -81,7 +81,7 @@ def check_sig_field(rate, res, length, parity, tail):
                 print("# CODE RATE 1/2")
                 print("--------------------")
                 MSC[n] = 4
-                output_array.append([str(bi2de(length[n, :])), 24, "16-QAM Modulation", "0.5"])
+                output_array.append([bi2de(length[n, :]), 24, "16-QAM Modulation", "0.5"])
             elif sum(rate[n, :] == [1, 0, 1, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
@@ -101,7 +101,7 @@ def check_sig_field(rate, res, length, parity, tail):
                 print("# CODE RATE 2/3")
                 print("--------------------")
                 MSC[n] = 6
-                output_array.append([str(bi2de(length[n, :])), 48, "64-QAM Modulation", "0.66"])
+                output_array.append([bi2de(length[n, :]), 48, "64-QAM Modulation", "0.66"])
             elif sum(rate[n, :] == [0, 0, 1, 1]) == 4:
                 print("PACKET" + str(n+1) + " is valid")
                 print("------------------")
@@ -111,7 +111,7 @@ def check_sig_field(rate, res, length, parity, tail):
                 print("# CODE RATE 3/4")
                 print("--------------------")
                 MSC[n] = 7
-                output_array.append([str(bi2de(length[n, :])), 54, "64-QAM Modulation", "0.75"])
+                output_array.append([bi2de(length[n, :]), 54, "64-QAM Modulation", "0.75"])
             else:  # If the rate field is invalid and doesn't match any allowable rate parameter the packet is invalid
                 print("PACKET " + str(n+1) + " rate is invalid")
     return MSC, np.array(output_array)

@@ -10,7 +10,7 @@ from modulate_symbs import modulate_symbs
 from de2bi import de2bi
 
 
-def transmit_packet(ppdu_length, code_rate, MSC, mac1, subtype):
+def transmit_packet(ppdu_length, code_rate, MSC, mac1, subtype): # ppdu_extra):
     # BPSK code rates = {1/2,3/4}
     # QPSK code rates = {1/2,3/4}
     # 16-QAM code rates = {1/2,3/4}

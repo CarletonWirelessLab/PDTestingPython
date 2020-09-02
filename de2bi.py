@@ -1,3 +1,5 @@
+import numpy as np
+
 
 def de2bi(n,N):
     bseed= bin(n).replace("0b", "")

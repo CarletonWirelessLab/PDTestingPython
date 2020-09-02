@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 # complex_data = np.concatenate((np.zeros(1000, dtype=complex), complex_data, np.zeros(1000, dtype=complex)))
 
 # Append 1000 zeros at front and back to pad complex data:
-s = transmit_packet(2000, "1/2", "BPSK", "BEAC09BEAC04", "Data")
+s = transmit_packet(2000, "1/2", "BPSK", "BEAC09BEAC04", "Beacon")
 complex_data = np.concatenate((np.zeros(1000, dtype=complex), s, np.zeros(1000, dtype=complex),s,np.zeros(1000,dtype=complex)))
 pkt_locs = detect_frames(complex_data)  # Determine start and end sample locations of each frame in the raw data
 

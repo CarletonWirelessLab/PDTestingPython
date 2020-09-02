@@ -59,7 +59,7 @@ def extract_mac(complex_data, pkt_start, MSC, hinv):
         MAC2 = MAC2 + [mac2]
         MAC3 = MAC3 + [mac3]
 
-        #Determine packet type and sub type from frame control field
+        # Determine packet type and sub type from frame control field
         packet_type = packet_type + [decode_type(bitstream[18 + np.arange(0, 6)])]
 
 
